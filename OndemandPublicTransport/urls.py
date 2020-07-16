@@ -26,5 +26,5 @@ urlpatterns = [
     
     #Rest Framework, import urls from api package folder
 
-    path('api/WeGo/', include('WeGo.api.urls', 'passenger_api' )),
+    path('api/WeGo/', include('WeGo.api.urls', 'models_api' )),
 ]

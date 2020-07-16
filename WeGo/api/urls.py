@@ -1,20 +1,18 @@
-from django.urls import path
-from WeGo.api.view import (
+from django.urls import path,include
+from WeGo.api.view import PassengerView, DriverView, BusView,ManagerView,RideRequestView
+from rest_framework import routers # this help us to have single url but with many actions
 
-	api_detail_passenger,
-	api_update_passenger,
-	api_delete_passenger,
-	api_create_passenger,
-	api_all_passengers,
-	)
+router = routers.DefaultRouter()
+router.register('passengers', PassengerView)
+router.register('drivers', DriverView)
+router.register('buses', BusView)
+router.register('Manager', ManagerView)
+router.register('RideRequest',RideRequestView)
 
 
 app_name = 'WeGo'
 
 urlpatterns = [
-    path('<name>/', api_detail_passenger , name="detail"),
-    path('<name>/update', api_update_passenger , name="update"),
-    path('<name>/delete', api_delete_passenger , name="delete"),
-    path('create', api_create_passenger , name="create"),
-    path('', api_all_passengers , name="veiwAll"),
+	path('',include(router.urls))
+	
 ]
