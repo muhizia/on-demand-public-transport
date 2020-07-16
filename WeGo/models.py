@@ -1,4 +1,5 @@
 from django.db import models
+from location_field.models.plain import PlainLocationField
 
 
 
@@ -54,7 +55,7 @@ class Driver(models.Model):
             self.name = self.name.strip()
 
 
-#oneToMany relationship
+#oneToMany relationship with Drivers
 class Bus(models.Model):
     CATEGORY = (('True','True'),('False','False'))
     id = models.AutoField(primary_key = True)
@@ -71,15 +72,15 @@ class Bus(models.Model):
         if self.plateNumber:
             self.plateNumber = self.plateNumber.strip()
 
-
+# class for requesting a ride
 class RideRequest(models.Model):
     pickupTime = models.DateTimeField(blank=True, null = True, default=None)
     departureCity = models.CharField(max_length=255)
+    departureLocation = PlainLocationField(based_fields=['departureCity'], zoom=7)
     destinationCity = models.CharField(max_length=255)
+    destinationLocation = PlainLocationField(based_fields=['destinationCity'], zoom=7)
+    numberOfSeets = models.PositiveIntegerField(null=False)
+    disabledPoeple = models.PositiveIntegerField(null=True)
     passengers = models.ManyToManyField(Passenger, blank = True) 
-
-
-
-    
 
 
