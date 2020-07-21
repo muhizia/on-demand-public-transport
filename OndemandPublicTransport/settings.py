@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'rest_framework',
+    'location_field.apps.DefaultConfig',
     'WeGo',
 ]
 
@@ -117,8 +118,9 @@ STATIC_URL = '/static/'
 
 LOCATION_FIELD = {
     'search.provider': 'google',
+
     'provider.google.api': '//maps.google.com/maps/api/js?sensor=false',
-    'provider.google.api_key': 'AIzaSyAdfPjlxLDV7PYee0Cg5eXvh9wvnrXlC7o',
+    'provider.google.api_key': 'AIzaSyDP-Apvj40Y8GQ69IO7Pwwi2cLqyKtS-Ro',
     'provider.google.api_libraries': '',
     'provider.google.map.type': 'ROADMAP',
 }
