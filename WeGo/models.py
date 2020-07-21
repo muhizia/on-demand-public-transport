@@ -38,31 +38,27 @@ class Passenger(models.Model):
     profilePicture  = models.FileField(max_length=None,blank=True,null=True)
     # this method is used as toString for java.
     def __str__(self):
-        return  self.name
+        return self.firstName +' '+ self.lastName
 
-    def clean(self):
-    	if self.name:
-    		self.name = self.name.strip()
+    
 
 # class for Driver account
 class Driver(models.Model):
     id              = models.AutoField(primary_key = True)
-    firstName       = models.CharField(max_length=100,null=True, blank=True)
-    lastName        = models.CharField(max_length=100,null=True, blank=True)
+    firstName       = models.CharField(max_length=100)
+    lastName        = models.CharField(max_length=100)
     userName        = models.CharField(max_length=100, unique= True)
     telephone       = models.CharField(max_length=11)
     address         = models.CharField (max_length= 100,blank=True)
-    email           = models.EmailField(max_length=100,unique= True,null=True, blank=True)
+    email           = models.EmailField(max_length=100,unique= True)
     password        = models.CharField(max_length= 10)
     passwordConfirm = models.CharField(max_length=10)
     profilePicture  = models.FileField(max_length=None,blank=True,null=True)
     def __str__(self):
-        return self.name
+        return self.firstName +' '+ self.lastName
 
     # this method remove the space after the name
-    def clean(self):
-        if self.name:
-            self.name = self.name.strip()
+    
 
 
 #oneToMany relationship with Drivers
