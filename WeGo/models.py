@@ -5,13 +5,16 @@ from location_field.models.plain import PlainLocationField
 
 # class for Passengers' account
 class Manager(models.Model):
-    id        = models.AutoField(primary_key = True)
-    name      = models.CharField(max_length=100, unique= True)
-    telephone = models.CharField(max_length=11)
-    address   = models.CharField (max_length= 100,blank=True)
-    email     = models.EmailField(max_length=100,unique= True)
-    password  = models.CharField(max_length= 10)
+    id              = models.AutoField(primary_key = True)
+    firstName       = models.CharField(max_length=100,null=True, blank=True)
+    lastName        = models.CharField(max_length=100,null=True, blank=True)
+    userName        = models.CharField(max_length=100, unique= True)
+    telephone       = models.CharField(max_length=11)
+    address         = models.CharField (max_length= 100,blank=True)
+    email           = models.EmailField(max_length=100,unique= True,null=True, blank=True)
+    password        = models.CharField(max_length= 10)
     passwordConfirm = models.CharField(max_length=10)
+    profilePicture  = models.FileField(max_length=None,blank=True,null=True)
     # this method is used as toString for java.
     def __str__(self):
         return  self.name
@@ -23,13 +26,16 @@ class Manager(models.Model):
 
 # class for Passengers' account
 class Passenger(models.Model):
-    id        = models.AutoField(primary_key = True)
-    name      = models.CharField(max_length=100, unique= True)
-    telephone = models.CharField(max_length=11)
-    address   = models.CharField (max_length= 100)
-    email     = models.EmailField(max_length=100,unique= True)
-    password  = models.CharField(max_length= 10)
+    id              = models.AutoField(primary_key = True)
+    firstName       = models.CharField(max_length=100,null=True, blank=True)
+    lastName        = models.CharField(max_length=100,null=True, blank=True)
+    userName        = models.CharField(max_length=100, unique= True)
+    telephone       = models.CharField(max_length=11)
+    address         = models.CharField (max_length= 100,blank=True)
+    email           = models.EmailField(max_length=100,unique= True,null=True, blank=True)
+    password        = models.CharField(max_length= 10)
     passwordConfirm = models.CharField(max_length=10)
+    profilePicture  = models.FileField(max_length=None,blank=True,null=True)
     # this method is used as toString for java.
     def __str__(self):
         return  self.name
@@ -40,13 +46,16 @@ class Passenger(models.Model):
 
 # class for Driver account
 class Driver(models.Model):
-    id        = models.AutoField(primary_key = True)
-    name      = models.CharField(unique=True, max_length=100)
-    telephone = models.CharField(max_length= 11)
-    address   = models.CharField (max_length= 100)
-    email     = models.EmailField(max_length=100,unique= True)
-    password  = models.CharField(max_length= 10)
+    id              = models.AutoField(primary_key = True)
+    firstName       = models.CharField(max_length=100,null=True, blank=True)
+    lastName        = models.CharField(max_length=100,null=True, blank=True)
+    userName        = models.CharField(max_length=100, unique= True)
+    telephone       = models.CharField(max_length=11)
+    address         = models.CharField (max_length= 100,blank=True)
+    email           = models.EmailField(max_length=100,unique= True,null=True, blank=True)
+    password        = models.CharField(max_length= 10)
     passwordConfirm = models.CharField(max_length=10)
+    profilePicture  = models.FileField(max_length=None,blank=True,null=True)
     def __str__(self):
         return self.name
 

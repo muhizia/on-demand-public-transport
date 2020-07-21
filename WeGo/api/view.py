@@ -1,4 +1,4 @@
-from rest_framework import status,viewsets
+from rest_framework import status,viewsets, permissions
 from rest_framework.response import Response 
 from rest_framework.decorators import api_view
 
@@ -169,22 +169,25 @@ def api_create_driver(request,name):
 
 """
 class ManagerView(viewsets.ModelViewSet):
-	queryset = Manager.objects.all()
+	
+	queryset         = Manager.objects.all()
 	serializer_class = ManagerSerializer
 
 class PassengerView(viewsets.ModelViewSet):
-	queryset = Passenger.objects.all()
-	serializer_class = PassengerSerializer
+	queryset 		   = Passenger.objects.all()
+	serializer_class   = PassengerSerializer
+	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    
 
 class DriverView(viewsets.ModelViewSet):
-	queryset = Driver.objects.all()
+	queryset         = Driver.objects.all()
 	serializer_class = DriverSerializer
 
 class BusView(viewsets.ModelViewSet):
-	queryset = Bus.objects.all()
+	queryset         = Bus.objects.all()
 	serializer_class = BusSerializer
 
 class RideRequestView(viewsets.ModelViewSet):
-	queryset = RideRequest.objects.all()
+	queryset         = RideRequest.objects.all()
 	serializer_class = RideRequestSerializer
 

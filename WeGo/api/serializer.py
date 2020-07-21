@@ -9,8 +9,8 @@ class ManagerSerializer(serializers.ModelSerializer):
     passwordConfirm = serializers.CharField(style={'input_type':'password'}, write_only=True)
     class Meta:
         model = Manager
-        fields = ('id','name',
-        'address','telephone','email','password','passwordConfirm')
+        fields = ('id','firstName','lastName','userName',
+        'address','telephone','email','password','passwordConfirm','profilePicture')
         extra_kwargs = {
             'password': {'write_only':True}
         }
@@ -21,8 +21,8 @@ class PassengerSerializer(serializers.ModelSerializer):
     passwordConfirm = serializers.CharField(style={'input_type':'password'}, write_only=True)
     class Meta:
         model = Passenger
-        fields = ('id','name',
-        'address','telephone','email','password','passwordConfirm')
+        fields = ('id','firstName','lastName','userName',
+        'address','telephone','email','password','passwordConfirm','profilePicture')
         extra_kwargs = {
             'password': {'write_only':True}
         }
@@ -31,7 +31,7 @@ class DriverSerializer(serializers.ModelSerializer):
     passwordConfirm = serializers.CharField(style={'input_type':'password'}, write_only=True)
     class Meta:
         model = Driver
-        fields = ('id','name', 'address','telephone','email','password','passwordConfirm')
+        fields = ('id','firstName','lastName','userName', 'address','telephone','email','password','passwordConfirm','profilePicture')
         extra_kwargs = {
             'password': {'write_only':True}
         }

@@ -1,5 +1,5 @@
 from django.urls import path,include
-from WeGo.api.view import PassengerView, DriverView, BusView,ManagerView,RideRequestView
+from WeGo.api.view import PassengerView, DriverView, BusView,ManagerView, RideRequestView
 from rest_framework import routers # this help us to have single url but with many actions
 
 router = routers.DefaultRouter()
