@@ -176,7 +176,7 @@ class ManagerView(viewsets.ModelViewSet):
 class PassengerView(viewsets.ModelViewSet):
 	queryset 		   = Passenger.objects.all()
 	serializer_class   = PassengerSerializer
-	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+	
     
 
 class DriverView(viewsets.ModelViewSet):

@@ -4,7 +4,8 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR),'media')
+MEDIA_URL = "/media/"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -116,6 +117,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIFILES_DIRS = {
+    os.path.join(BASE_DIR, 'static'),
+}
+
 LOCATION_FIELD = {
     'search.provider': 'google',
 
@@ -124,3 +129,9 @@ LOCATION_FIELD = {
     'provider.google.api_libraries': '',
     'provider.google.map.type': 'ROADMAP',
 }
+
+"""
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticatedOrReadOnly',)
+}
+"""
