@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'authentication',
+    'rest_framework.authtoken',
     'location_field.apps.DefaultConfig',
     'WeGo',
 ]
@@ -136,11 +137,11 @@ LOCATION_FIELD = {
 
 
 REST_FRAMEWORK = {
-    #'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticatedOrReadOnly',)
+
     'NON_FIELD_ERRORS_KEY':'error',
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+    ]
 }
 
 
