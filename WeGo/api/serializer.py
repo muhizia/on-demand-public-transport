@@ -7,41 +7,35 @@ from django.contrib.auth.models import User
 
 
 
-
 class ManagerSerializer(serializers.ModelSerializer):
-    passwordConfirm = serializers.CharField(style={'input_type':'password'}, write_only=True)
+   
     class Meta:
         model = Manager
-        fields = ('firstName','lastName','userName',
-        'address','telephone','email','password','passwordConfirm','profilePicture','roles')
+        fields = ('id','firstName','lastName',
+        'address','telephone','profilePicture','roles')
         extra_kwargs = {
-            'password': {'write_only':True},
-            'roles'    : {'read_only':True}
+            'roles'    : {'read_only':True},
         }
     
 
 
 
 class PassengerSerializer(serializers.ModelSerializer):
-    passwordConfirm = serializers.CharField(style={'input_type':'password'}, write_only=True)
     class Meta:
         model = Passenger
-        fields = ('firstName','lastName','userName',
-        'address','telephone','email','password','passwordConfirm','profilePicture','roles')
+        fields = ('id','firstName','lastName',
+        'address','telephone','profilePicture','roles')
         extra_kwargs = {
-            'password': {'write_only':True},
-            'roles'   : {'read_only':True}
+            'roles'    : {'read_only':True},
         }
 
 class DriverSerializer(serializers.ModelSerializer):
-    passwordConfirm = serializers.CharField(style={'input_type':'password'}, write_only=True)
     class Meta:
         model = Driver
-        fields = ('firstName','lastName','userName',
-        'address','telephone','email','password','passwordConfirm','profilePicture','roles')
+        fields = ('id','firstName','lastName',
+        'address','telephone','profilePicture','roles')
         extra_kwargs = {
-            'password': {'write_only':True},
-            'roles'   : {'read_only':True}
+            'roles'    : {'read_only':True},
         }
 
 

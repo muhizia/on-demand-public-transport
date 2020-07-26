@@ -27,4 +27,9 @@ urlpatterns = [
     #Rest Framework, import urls from api package folder
 
     path('api/WeGo/', include('WeGo.api.urls', 'models_api' )),
+    path('auth/', include('authentication.urls')),
+    path('api-auth/',include('rest_framework.urls'))
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

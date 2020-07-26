@@ -1,18 +1,13 @@
 from django.db import models
 from location_field.models.plain import PlainLocationField
-from django.contrib.auth.models import User
 
-class User(models.Model):
-    userName        = models.CharField(max_length=100, unique= True)
-    email           = models.EmailField(max_length=100,null=True, blank=True)
-    password        = models.CharField(max_length= 10)
-    passwordConfirm = models.CharField(max_length=10)
-    
-    class Meta:
-        abstract = True
+
+
+
 
 # class for Passengers' account
-class Manager(User):
+class Manager(models.Model):
+    
     firstName       = models.CharField(max_length=100,null=True, blank=True)
     lastName        = models.CharField(max_length=100,null=True, blank=True)
     telephone       = models.CharField(max_length=11)
@@ -27,7 +22,8 @@ class Manager(User):
     
 
 # class for Passengers' account
-class Passenger(User):
+class Passenger(models.Model):
+    
     firstName       = models.CharField(max_length=100,null=True, blank=True)
     lastName        = models.CharField(max_length=100,null=True, blank=True)
     telephone       = models.CharField(max_length=11)
@@ -41,13 +37,15 @@ class Passenger(User):
     
 
 # class for Driver account
-class Driver(User):
+class Driver(models.Model):
     firstName       = models.CharField(max_length=100)
     lastName        = models.CharField(max_length=100)
     telephone       = models.CharField(max_length=11)
     address         = models.CharField (max_length= 100,blank=True)
     profilePicture  = models.FileField(max_length=None,blank=True,null=True)
-    roles            = models.CharField(default="driver",max_length=50)
+    roles           = models.CharField(default="driver",max_length=50)
+    
+    
     def __str__(self):
         return self.firstName +' '+ self.lastName
 
@@ -96,9 +94,9 @@ class RideRequest(models.Model):
     CHOICE = [BusStop.objects.all()]
     pickupTime          = models.DateTimeField(blank=True, null = True, default=None)
     departureCity       = models.CharField(max_length=255)
-    departureLocation   = PlainLocationField(based_fields=['departureCity'], zoom=13)
+    departureLocation   = PlainLocationField(based_fields=['departureCity'], zoom=13,null=True, blank=True)
     destinationCity     = models.CharField(max_length=255)
-    destinationLocation = PlainLocationField(based_fields=['destinationCity'], zoom=13)
+    destinationLocation = PlainLocationField(based_fields=['destinationCity'], zoom=13, null=True, blank=True)
     numberOfSeets       = models.PositiveIntegerField(null=False)
     disabledPoeple      = models.PositiveIntegerField(null=True)
     passengers          = models.ManyToManyField(Passenger, blank = True) 
