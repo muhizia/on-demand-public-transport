@@ -1,39 +1,41 @@
 from rest_framework import serializers
 
-from WeGo.models import Passenger
-from WeGo.models import Driver, Bus,Manager,RideRequest
+from WeGo.models import Passenger,Route
+from WeGo.models import Driver, Bus,Manager,RideRequest,BusStop
+from django.contrib.auth.models import User
+
 
 
 
 class ManagerSerializer(serializers.ModelSerializer):
-    passwordConfirm = serializers.CharField(style={'input_type':'password'}, write_only=True)
+   
     class Meta:
         model = Manager
-        fields = ('id','firstName','lastName','userName',
-        'address','telephone','email','password','passwordConfirm','profilePicture')
+        fields = ('id','firstName','lastName',
+        'address','telephone','profilePicture','roles')
         extra_kwargs = {
-            'password': {'write_only':True}
+            'roles'    : {'read_only':True},
         }
     
 
 
+
 class PassengerSerializer(serializers.ModelSerializer):
-    passwordConfirm = serializers.CharField(style={'input_type':'password'}, write_only=True)
     class Meta:
         model = Passenger
-        fields = ('id','firstName','lastName','userName',
-        'address','telephone','email','password','passwordConfirm','profilePicture')
+        fields = ('id','firstName','lastName',
+        'address','telephone','profilePicture','roles')
         extra_kwargs = {
-            'password': {'write_only':True}
+            'roles'    : {'read_only':True},
         }
 
 class DriverSerializer(serializers.ModelSerializer):
-    passwordConfirm = serializers.CharField(style={'input_type':'password'}, write_only=True)
     class Meta:
         model = Driver
-        fields = ('id','firstName','lastName','userName', 'address','telephone','email','password','passwordConfirm','profilePicture')
+        fields = ('id','firstName','lastName',
+        'address','telephone','profilePicture','roles')
         extra_kwargs = {
-            'password': {'write_only':True}
+            'roles'    : {'read_only':True},
         }
 
 
@@ -49,6 +51,17 @@ class RideRequestSerializer(serializers.ModelSerializer):
         model = RideRequest
         fields = ('id','pickupTime','departureCity','departureLocation','destinationCity','destinationLocation',
         'numberOfSeets','disabledPoeple','passengers')
+
+class BusStopSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = BusStop
+        fields = ('id','routes','busStopName')
+class RouteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Route
+        fields = ('id','name')
 
 
 

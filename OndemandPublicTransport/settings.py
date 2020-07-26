@@ -18,6 +18,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# To make our app to use our own created user
+AUTH_USER_MODEL = 'authentication.User'
+
 
 # Application definition
 
@@ -30,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'rest_framework',
+    'authentication',
     'location_field.apps.DefaultConfig',
     'WeGo',
 ]
@@ -72,7 +76,7 @@ DATABASES = {
 
     'default': {
         'ENGINE':'djongo',
-        'NAME': 'Transport',
+        'NAME': 'TransportRwanda',
         'HOST': 'localhost',
         'PORT': '27017',
     }
@@ -130,8 +134,16 @@ LOCATION_FIELD = {
     'provider.google.map.type': 'ROADMAP',
 }
 
-"""
+
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticatedOrReadOnly',)
+    #'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticatedOrReadOnly',)
+    'NON_FIELD_ERRORS_KEY':'error',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
-"""
+
+
+# to send email to the user to activate their account
+
+

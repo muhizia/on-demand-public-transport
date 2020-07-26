@@ -3,39 +3,33 @@ from location_field.models.plain import PlainLocationField
 
 
 
+
+
 # class for Passengers' account
 class Manager(models.Model):
-    id              = models.AutoField(primary_key = True)
+    
     firstName       = models.CharField(max_length=100,null=True, blank=True)
     lastName        = models.CharField(max_length=100,null=True, blank=True)
-    userName        = models.CharField(max_length=100, unique= True)
     telephone       = models.CharField(max_length=11)
     address         = models.CharField (max_length= 100,blank=True)
-    email           = models.EmailField(max_length=100,unique= True,null=True, blank=True)
-    password        = models.CharField(max_length= 10)
-    passwordConfirm = models.CharField(max_length=10)
     profilePicture  = models.FileField(max_length=None,blank=True,null=True)
+    roles           = models.CharField(default="manager",max_length= 50)
     # this method is used as toString for java.
     def __str__(self):
-        return  self.name
+        return  self.firstName+' '+lastName
 
-    def clean(self):
-    	if self.name:
-    		self.name = self.name.strip()
+  
     
 
 # class for Passengers' account
 class Passenger(models.Model):
-    id              = models.AutoField(primary_key = True)
+    
     firstName       = models.CharField(max_length=100,null=True, blank=True)
     lastName        = models.CharField(max_length=100,null=True, blank=True)
-    userName        = models.CharField(max_length=100, unique= True)
     telephone       = models.CharField(max_length=11)
     address         = models.CharField (max_length= 100,blank=True)
-    email           = models.EmailField(max_length=100,unique= True,null=True, blank=True)
-    password        = models.CharField(max_length= 10)
-    passwordConfirm = models.CharField(max_length=10)
     profilePicture  = models.FileField(max_length=None,blank=True,null=True)
+    roles            = models.CharField(default="passenger", max_length= 50)
     # this method is used as toString for java.
     def __str__(self):
         return self.firstName +' '+ self.lastName
@@ -44,16 +38,14 @@ class Passenger(models.Model):
 
 # class for Driver account
 class Driver(models.Model):
-    id              = models.AutoField(primary_key = True)
     firstName       = models.CharField(max_length=100)
     lastName        = models.CharField(max_length=100)
-    userName        = models.CharField(max_length=100, unique= True)
     telephone       = models.CharField(max_length=11)
     address         = models.CharField (max_length= 100,blank=True)
-    email           = models.EmailField(max_length=100,unique= True)
-    password        = models.CharField(max_length= 10)
-    passwordConfirm = models.CharField(max_length=10)
     profilePicture  = models.FileField(max_length=None,blank=True,null=True)
+    roles           = models.CharField(default="driver",max_length=50)
+    
+    
     def __str__(self):
         return self.firstName +' '+ self.lastName
 
@@ -78,13 +70,35 @@ class Bus(models.Model):
         if self.plateNumber:
             self.plateNumber = self.plateNumber.strip()
 
+
+class Route(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+class BusStop(models.Model):
+
+    routes = models.ForeignKey(Route, on_delete=models.CASCADE)
+    busStopName = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.busStopName
+
+    class Meta:
+        unique_together = (("routes", "busStopName"),) 
+
+        
 # class for requesting a ride
 class RideRequest(models.Model):
+    CHOICE = [BusStop.objects.all()]
     pickupTime          = models.DateTimeField(blank=True, null = True, default=None)
     departureCity       = models.CharField(max_length=255)
-    departureLocation   = PlainLocationField(based_fields=['departureCity'], zoom=2)
+    departureLocation   = PlainLocationField(based_fields=['departureCity'], zoom=13,null=True, blank=True)
     destinationCity     = models.CharField(max_length=255)
-    destinationLocation = PlainLocationField(based_fields=['destinationCity'], zoom=2)
+    destinationLocation = PlainLocationField(based_fields=['destinationCity'], zoom=13, null=True, blank=True)
     numberOfSeets       = models.PositiveIntegerField(null=False)
     disabledPoeple      = models.PositiveIntegerField(null=True)
     passengers          = models.ManyToManyField(Passenger, blank = True) 
+
+
