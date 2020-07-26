@@ -1,11 +1,12 @@
-from rest_framework import status,viewsets, permissions
+from rest_framework import status,viewsets, permissions,generics
 from rest_framework.response import Response 
 from rest_framework.decorators import api_view
+from django.contrib.auth.models import User
 
-
-from WeGo.models import Passenger, Bus, Driver,Manager,RideRequest
+from WeGo.models import Passenger, Bus, Driver,Manager,RideRequest,BusStop,Route
 from WeGo.api.serializer import (PassengerSerializer,
-BusSerializer,DriverSerializer,ManagerSerializer,RideRequestSerializer)
+BusSerializer,DriverSerializer,ManagerSerializer,
+RideRequestSerializer,BusStopSerializer,RouteSerializer)
 
 
 
@@ -168,10 +169,11 @@ def api_create_driver(request,name):
 		return Response(serialiser.data, status=status.HTTP_400_BAD_REQUEST)
 
 """
+
 class ManagerView(viewsets.ModelViewSet):
-	
 	queryset         = Manager.objects.all()
 	serializer_class = ManagerSerializer
+    
 
 class PassengerView(viewsets.ModelViewSet):
 	queryset 		   = Passenger.objects.all()
@@ -190,4 +192,13 @@ class BusView(viewsets.ModelViewSet):
 class RideRequestView(viewsets.ModelViewSet):
 	queryset         = RideRequest.objects.all()
 	serializer_class = RideRequestSerializer
+
+class RouteView(viewsets.ModelViewSet):
+	queryset      = Route.objects.all()
+	serializer_class = RouteSerializer
+
+class BusStopView(viewsets.ModelViewSet):
+	queryset    = BusStop.objects.all()
+	serializer_class = BusStopSerializer
+
 
