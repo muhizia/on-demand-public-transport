@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'authentication',
+    'ondemandUssd',
     'rest_framework.authtoken',
     'location_field.apps.DefaultConfig',
     'WeGo',

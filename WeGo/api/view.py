@@ -201,4 +201,12 @@ class BusStopView(viewsets.ModelViewSet):
 	queryset    = BusStop.objects.all()
 	serializer_class = BusStopSerializer
 
+	
 
+class BustopByRouteList(generics.ListAPIView):
+	serializer_class = BusStopSerializer
+
+	def get_queryset(self):
+
+		route = self.kwargs['routes']
+		return BusStop.objects.filter(routes=route)
