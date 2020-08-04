@@ -10,7 +10,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['email', 'username', 'password']
+        fields = ['firstname', 'lastname','email', 'username', 'password']
     
     def validate(self, attrs):
         email = attrs.get('email','')
@@ -23,3 +23,13 @@ class RegisterSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
+    
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'firstname', 'lastname','email', 'telephone', 'username', 'password', 'roles', 'is_active', 'is_staff']
+        extra_kwargs = {
+            'roles'    : {'read_only':True},
+            'is_active'    : {'read_only':True},
+            'is_staff'    : {'read_only':True},
+        }

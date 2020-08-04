@@ -28,7 +28,8 @@ urlpatterns = [
 
     path('api/WeGo/', include('WeGo.api.urls', 'models_api' )),
     path('auth/', include('authentication.urls')),
-    path('api-auth/',include('rest_framework.urls'))
+    path('api-auth/',include('rest_framework.urls')),
+    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]
 
 if settings.DEBUG:

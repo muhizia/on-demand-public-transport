@@ -31,9 +31,13 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    firstname       = models.CharField(max_length=50, null=True)
+    lastname        = models.CharField(max_length=50, null=True)
+    telephone       = models.CharField(max_length=11, null=True, unique=True)
     username        = models.CharField(max_length=255, unique= True, db_index=True) 
     # db_index to search by username
     email           = models.EmailField(max_length=255, unique=True, db_index=True)
+    roles           = models.CharField(default="psg",max_length= 10)
     is_verified = models.BooleanField(default=True)
      # we set is because the email to verify was needed
     is_active = models.BooleanField(default=True)
