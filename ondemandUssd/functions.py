@@ -1,4 +1,4 @@
-from ondemandUssd.models import Passenger,Session_levels,RideRequest
+from ondemandUssd.models import Passenger,Session_levels,UssdRideRequest
 
 from datetime import datetime
 
@@ -17,10 +17,13 @@ def getPassengerDetail(telephone):
     else:
         return getPassenger
 
-def saveRequestLocation(pickupTime, departureCity, destinationCity):
+def saveRequestLocation(pickupTime, departureCity, destinationCity,passengers,disabled):
+    
     pickTime = datetime.strptime(pickupTime, "%m/%d/%Y %H:%M")
-    savelocation = RideRequest(pickupTime=pickTime,departureCity=departureCity,destinationCity=destinationCity)
+    savelocation = UssdRideRequest(pickupTime=pickTime,departureCity=departureCity,
+    destinationCity=destinationCity,numberOfSeets=passengers,disabledPoeple=disabled)
     savelocation.save()
+    return savelocation
 
 def saveSession(session,telephone, level):
     

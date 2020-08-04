@@ -19,11 +19,12 @@ class Session_levels(models.Model):
     def __str__(self):
         self.telephone
 
-class RideRequest(models.Model):
-
+class UssdRideRequest(models.Model):
     pickupTime          = models.DateTimeField(blank=True, null = True, default=None)
     departureCity       = models.CharField(max_length=255, blank=True)
     destinationCity     = models.CharField(max_length=255, blank=True)
     numberOfSeets       = models.PositiveIntegerField(null=True, default=1)
     disabledPoeple      = models.PositiveIntegerField(null=True, default=0)
     passengers          = models.ManyToManyField(Passenger, blank = True) 
+
+  

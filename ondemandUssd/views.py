@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
 from django.conf import settings
-from ondemandUssd.models import Passenger
+from ondemandUssd.models import Passenger,UssdRideRequest
 from ondemandUssd.functions import (checkUserExist,saveSession,
 checkUserLevel,saveNewUser,checksessionLevel,
 checkPassword,updateSession,userLevel,updateUserPassword,getPassengerDetail,saveRequestLocation)
@@ -60,7 +60,88 @@ def home(request):
            
 
         elif (checkUserExist(phoneNumber) == True):
+            if text == "":
+                saveSession(sessionId,phoneNumber, 1)
+                #textsplit[0] 12345
+                response = "CON Welcome to WeGo<br/>"
+                response +="Enter your pin<br/>"
+                return HttpResponse (response, content_type="text/plain")
+            elif checksessionLevel(sessionId) == 1:
+                if(checkPassword(phoneNumber, textsplit[0])):
+                    updateSession(sessionId,phoneNumber, 2)
+                    #textsplit[1] 12345*1
+                    response = "CON Book a ride <br/>"
+                    response += "1. Pickup place <br/>"
+                    response += "2. Change your pin <br/>"
+                    return HttpResponse (response, content_type="text/plain")
+                else:
+                    response ="END Invalid pin <br/>"
+                    return HttpResponse (response, content_type="text/plain")
+            elif checksessionLevel(sessionId) == 2:
 
+                if textsplit[1] == "1":
+                    #textsplit[2] 12345*1*08/03/2020 14:24
+                    updateSession(sessionId,phoneNumber, 11)
+                    response = "CON Data and Time <br/> "
+                    response += "month/day/year hour:minute <br/>"
+                    return HttpResponse (response, content_type="text/plain")
+
+                elif textsplit[1] == "2":
+                    # textsplit[2] 12345*2*12345
+                    updateSession(sessionId,phoneNumber, 3)
+                    response = "CON Existing pin <br/>"
+                    return HttpResponse (response, content_type="text/plain")
+                else:
+                    response = "END Invalid response <br/>"
+                    return HttpResponse (response, content_type="text/plain")
+            elif checksessionLevel(sessionId) == 11:
+                  # textsplit[3] 12345*1*08/03/2020 14:24*L12345,L21222*
+                updateSession(sessionId,phoneNumber, 12)
+                response = "CON picup and dropoff place <br/>"
+                response += "Enter the place codes separated by<br/>"
+                response += ", Ex: L12345,L21222<br/>"
+                return HttpResponse (response, content_type="text/plain")
+            elif checksessionLevel(sessionId) == 3:
+                    #textsplit[3] 12345*2*12345*54321
+                    if checkPassword(phoneNumber,textsplit[0]):
+                        updateSession(sessionId,phoneNumber, 12)
+                        response = "CON New pin <br/>"
+                        return HttpResponse (response, content_type="text/plain")
+                    else:
+                        response = "END Invalid pin <br/>"
+                        return HttpResponse (response, content_type="text/plain")
+            elif checksessionLevel(sessionId) == 12 and textsplit[1]=="2":
+
+                    if len(textsplit[3]) == 5:
+                        updateUserPassword(phoneNumber, textsplit[3])
+                        response = "END Pin updated <br/> <br/>"
+                        return HttpResponse (response, content_type="text/plain")
+                    else:
+                        response = "END invalid pin <br/>"
+                        return HttpResponse (response, content_type="text/plain")
+            
+            elif checksessionLevel(sessionId) == 12 and textsplit[1]=="1":
+                updateSession(sessionId,phoneNumber, 13)
+                 # textsplit[4] 12345*1*08/03/2020 14:24*L12345,L21222*2
+                response = "CON Number of passenger <br/>"
+                return HttpResponse (response, content_type="text/plain")
+            elif checksessionLevel(sessionId) == 13:
+                updateSession(sessionId,phoneNumber, 14)
+                # textsplit[5] 12345*1*08/03/2020 14:24*L12345,L21222*2*0
+                response = "CON Number of People with disability<br/>"
+                return HttpResponse (response, content_type="text/plain")
+            elif checksessionLevel(sessionId) == 14:
+                passengerDetails = getPassengerDetail(phoneNumber)
+                locationsplit = textsplit[3].split(",")
+                savedRequest = saveRequestLocation(textsplit[2],locationsplit[0], locationsplit[1],textsplit[4], textsplit[5])
+                savedRequest.passengers.add(passengerDetails)
+                response = "END payment Detail <br/>"
+                response += "Remera Bus Park --><br/>"
+                response += "Nyabugogo Bus Park for 450<br/>"
+                response += "Rwf<br/>"
+                return HttpResponse (response, content_type="text/plain")
+
+                
             if checksessionLevel(sessionId) == 4:
                     # if the user press one to continue and has the passwod *12345*Patrick dushimimanam*1
                 if textsplit[2] == "1":
@@ -105,7 +186,7 @@ def home(request):
                 elif textsplit[3] == "1":
                     #textsplit[5]
                     updateSession(sessionId,phoneNumber, 8)
-                    response = "CON picup and dropoff place <br/>"
+                    response = "CON pickup and dropoff place <br/>"
                     response += "Enter the place codes separated by<br/>"
                     response += ", Ex: L12345,L21222<br/>"
                     return HttpResponse (response, content_type="text/plain")
@@ -121,72 +202,36 @@ def home(request):
                     return HttpResponse (response, content_type="text/plain")
             # if the user press one to continue and has the passwod *12345*Patrick dushimimanam*1*1*03/08/2020 21:27*L12345,L21222
             elif checksessionLevel(sessionId) == 8:
+                updateSession(sessionId,phoneNumber, 9)
+                #textsplit[6]
+                response = "CON Number of passenger <br/>"
+                return HttpResponse (response, content_type="text/plain")
+            elif checksessionLevel(sessionId) == 9:
+                updateSession(sessionId,phoneNumber, 10)
+                #textsplit[7]
+                response = "CON Number of people with disability<br/>"
+                return HttpResponse (response, content_type="text/plain")
+
+                # if the user press one to continue and has the passwod *12345*Patrick dushimimanam*1*1*03/08/2020 21:27*L12345,L21222*1
+                # if the user press one to continue and has the passwod *12345*Patrick dushimimanam*1*1*03/08/2020 21:27*L12345,L21222*2*3*1
+            elif  checksessionLevel(sessionId) == 10:
 
                 passengerDetails = getPassengerDetail(phoneNumber)
                 locationsplit = textsplit[5].split(",")
-                saveRequestLocation(textsplit[4],locationsplit[0], locationsplit[1])
-                updateSession(sessionId,phoneNumber, 9)
-                #textsplit[6]
-                response = "CON Trip payment <br/>"
-                response += "1. Payment <br/>"
-                response += "2. Add more passenger <br/>"
-                response += "3. Add people with disability<br/>"
+                savedRequest = saveRequestLocation(textsplit[4],locationsplit[0], locationsplit[1],textsplit[6], textsplit[7])
+                savedRequest.passengers.add(passengerDetails)
+
+                response = "END Payment Details <br/>"
+                response += "Remera Bus Park --><br/>"
+                response += "Nyabugogo Bus Park for 450<br/>"
+                response += "Rwf<br/>"
                 return HttpResponse (response, content_type="text/plain")
-            elif checksessionLevel(sessionId) == 9:
-                # if the user press one to continue and has the passwod *12345*Patrick dushimimanam*1*1*03/08/2020 21:27*L12345,L21222*1
-                # if the user press one to continue and has the passwod *12345*Patrick dushimimanam*1*1*03/08/2020 21:27*L12345,L21222*2*3*1
-                if textsplit[6] == "1":
-                    
-                    response = "END payment Detail <br/>"
-                    response += "Remera Bus Park --><br/>"
-                    response += "Nyabugogo Bus Park for 450<br/>"
-                    response += "Rwf<br/>"
-                    return HttpResponse (response, content_type="text/plain")
-                # if the user press one to continue and has the passwod *12345*Patrick dushimimanam*1*1*03/08/2020 21:27*L12345,L21222*2
-                elif textsplit[6]=="2" or textsplit[7]=="3":
-                    
-                    updateSession(sessionId,phoneNumber, 8)
-                    response = "CON Number of passengers"
-                    #textsplit[7]
-                    return HttpResponse (response, content_type="text/plain")
-                # if the user press one to continue and has the passwod *12345*Patrick dushimimanam*1*1*03/08/2020 21:27*L12345,L21222*2*3
-                elif textsplit[6]=="3" or textsplit[7]=="3" :
-                     #textsplit[8]
-                    updateSession(sessionId,phoneNumber, 8)
-                    response = "CON People with disability<br/>"
-                    return HttpResponse (response, content_type="text/plain")
-            
-                
+                             
         else:
 
             response = "END Invalid response <br/> "
             return HttpResponse (response, content_type="text/plain")
-            """
-            if text == "":
-                # check if the user exist
-                saveSession(sessionId,phoneNumber, 1)
-                response = "CON <t/> Welcome to WeGo <br/>"
-                response += "Enter your password <br/>"
-                return HttpResponse (response, content_type="text/plain")
-
-            elif checkPassword(phoneNumber,text) and checksessionLevel(sessionId) == 1:
-
-                updateSession(sessionId,phoneNumber, 2)
-                response = "CON Book a ride <br/>"
-                response += "1. Pickup order <br/>"
-                response += "2. Change your pin <br/>"
-                return HttpResponse (response, content_type="text/plain")
             
-            # if the user press two to exit and has the passwod *12345*Patrick dushimimanam*2
-            elif checksessionLevel(sessionId) == 2:
-                if textsplit[1] == 1:
-                    updateSession(sessionId,phoneNumber, 3)
-                    response = "CON Date and Time <br/>"
-                    response +=  "<b> day/month/year hour:minute </b><br/>"
-
-            else:
-                """
-              
 
 
 

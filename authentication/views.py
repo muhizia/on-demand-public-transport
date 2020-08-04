@@ -11,6 +11,7 @@ from .serializers import RegisterSerializer
 # take url and give us a path
 from django.urls import reverse
 
+
 class RegisterView(generics.GenericAPIView):
 
     serializer_class = RegisterSerializer
@@ -22,9 +23,9 @@ class RegisterView(generics.GenericAPIView):
        
         user_data = serializer.data
          # to provide a token to the user, it gives two token one for refresh and add for access
-        user = User.objects.get(email=user_data['email'])
+        #user = User.objects.get(email=user_data['email'])
 
-        token = RefreshToken.for_user(user).access_token
+        #token = RefreshToken.for_user(user).access_token
     
      
         return Response(user_data, status = status.HTTP_201_CREATED)

@@ -42,8 +42,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateTimeField(auto_now=True)
 
     #TO TELL DJANGO TO USE USERNAIM 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username',]
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []
 
     objects = UserManager()
 
