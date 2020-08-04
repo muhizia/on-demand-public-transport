@@ -1,2 +1,4 @@
 Pipfile.lock
 Pipfile
+WeGo/migrations
+authentication/migrations
