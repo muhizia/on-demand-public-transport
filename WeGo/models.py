@@ -72,21 +72,34 @@ class Bus(models.Model):
 
 
 class Route(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.name
 
-class BusStop(models.Model):
-
+class Zone(models.Model):
+    id = models.AutoField(primary_key=True)
     routes = models.ForeignKey(Route, on_delete=models.CASCADE)
-    busStopName = models.CharField(max_length=100)
+    zoneName = models.CharField(max_length=255,unique=True)
+
+    def __str__(self):
+        return self.zoneName
+    
+    class Meta:
+        unique_together =(("routes", "zoneName"),)
+
+
+class BusStop(models.Model):
+    id = models.AutoField(primary_key=True)
+    zones = models.ForeignKey(Zone, on_delete=models.CASCADE)
+    busStopName = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.busStopName
 
     class Meta:
-        unique_together = (("routes", "busStopName"),) 
+        unique_together = (("zones", "busStopName"),) 
 
         
 # class for requesting a ride

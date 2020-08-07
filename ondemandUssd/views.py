@@ -71,7 +71,7 @@ def home(request):
                     updateSession(sessionId,phoneNumber, 2)
                     #textsplit[1] 12345*1
                     response = "CON Book a ride <br/>"
-                    response += "1. Pickup place <br/>"
+                    response += "1. Request a ride <br/>"
                     response += "2. Change your pin <br/>"
                     return HttpResponse (response, content_type="text/plain")
                 else:
@@ -147,7 +147,7 @@ def home(request):
                 if textsplit[2] == "1":
                     updateSession(sessionId,phoneNumber, 5)
                     response = "CON Book a ride <br/>"
-                    response += "1. Pickup place <br/>"
+                    response += "1. Request a ride <br/>"
                     response += "2. Change your pin <br/>"
                     return HttpResponse (response, content_type="text/plain")
                      # if the user press one to continue and has the passwod *12345*Patrick dushimimanam*2
