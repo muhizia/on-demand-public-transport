@@ -1,5 +1,6 @@
 from django.db import models
 from location_field.models.plain import PlainLocationField
+from authentication.views import User
 
 
 
@@ -111,6 +112,6 @@ class RideRequest(models.Model):
     destinationLocation = PlainLocationField(based_fields=['destinationCity'], zoom=13, null=True, blank=True)
     numberOfSeets       = models.PositiveIntegerField(null=True)
     disabledPoeple      = models.PositiveIntegerField(null=True)
-    passengers          = models.ManyToManyField(Passenger, blank = True) 
+    passengers          = models.ForeignKey(User, on_delete=models.CASCADE, blank = True, null=True) 
 
 
