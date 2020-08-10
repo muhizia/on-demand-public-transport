@@ -1,5 +1,6 @@
 from django.db import models
 from location_field.models.plain import PlainLocationField
+from authentication.views import User
 
 
 
@@ -93,12 +94,12 @@ class BusStop(models.Model):
 class RideRequest(models.Model):
     CHOICE = [BusStop.objects.all()]
     pickupTime          = models.DateTimeField(blank=True, null = True, default=None)
-    departureCity       = models.CharField(max_length=255)
+    # departureCity       = models.CharField(max_length=255)
     departureLocation   = PlainLocationField(based_fields=['departureCity'], zoom=13,null=True, blank=True)
-    destinationCity     = models.CharField(max_length=255)
+    # destinationCity     = models.CharField(max_length=255)
     destinationLocation = PlainLocationField(based_fields=['destinationCity'], zoom=13, null=True, blank=True)
     numberOfSeets       = models.PositiveIntegerField(null=False)
     disabledPoeple      = models.PositiveIntegerField(null=True)
-    passengers          = models.ManyToManyField(Passenger, blank = True) 
+    passengers          = models.ForeignKey(User, on_delete=models.CASCADE, blank = True, null=True) 
 
 

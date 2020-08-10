@@ -49,7 +49,7 @@ class RideRequestSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = RideRequest
-        fields = ('id','pickupTime','departureCity','departureLocation','destinationCity','destinationLocation',
+        fields = ('id','pickupTime', 'departureLocation', 'destinationLocation',
         'numberOfSeets','disabledPoeple','passengers')
 
 class BusStopSerializer(serializers.ModelSerializer):

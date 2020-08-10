@@ -1,7 +1,7 @@
 from django.urls import path,include
 from WeGo.api.view import (PassengerView, 
 DriverView, BusView,ManagerView, RideRequestView, BusStopView,RouteView)
-from authentication.views import UserViewSet
+from authentication.views import UserViewSet, login_request
 from rest_framework import routers # this help us to have single url but with many actions
 
 router = routers.DefaultRouter()
@@ -20,5 +20,5 @@ app_name = 'WeGo'
 
 urlpatterns = [
 	path('',include(router.urls)),
-	
+	path("login", login_request, name="login"),
 ]

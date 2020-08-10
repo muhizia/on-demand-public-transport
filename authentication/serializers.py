@@ -10,12 +10,12 @@ class RegisterSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['firstname', 'lastname','email', 'username', 'password']
+        fields = ['email', 'username', 'password' ,'telephone',]
     
     def validate(self, attrs):
         email = attrs.get('email','')
         username = attrs.get('username','')
-
+        
         if not username.isalnum():
             raise serializers.ValidationError(
                 'The username should only contain alphanumeric character')
@@ -27,7 +27,19 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'firstname', 'lastname','email', 'telephone', 'username', 'password', 'roles', 'is_active', 'is_staff']
+        fields = ['id', 'firstname', 'lastname','email', 'telephone', 'username', 'profilePicture','roles', 'is_active', 'is_staff']
+        extra_kwargs = {
+            'roles'    : {'read_only':True},
+            'username'    : {'read_only':True},
+            # 'email'    : {'read_only':True},
+            'is_active'    : {'read_only':True},
+            'is_staff'    : {'read_only':True},
+        }
+        
+class UserDetailSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'firstname', 'lastname','email', 'telephone', 'username', 'profilePicture', 'roles', 'is_active', 'is_staff']
         extra_kwargs = {
             'roles'    : {'read_only':True},
             'is_active'    : {'read_only':True},

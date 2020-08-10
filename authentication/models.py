@@ -5,7 +5,12 @@ BaseUserManager, PermissionsMixin)
 
 class UserManager(BaseUserManager):
 # custom model for user
-    def create_user(self, username, email, password=None):
+    def create_user(self, username, email, password=None, **extra_fields):
+        extra_fields.setdefault('firstname', None)
+        extra_fields.setdefault('lastname', None)
+        #extra_fields.setdefault('profilePicture', None)
+        extra_fields.setdefault('email', None)
+        extra_fields.setdefault('telephone', None)
         if username is None:
             raise TypeError('Users should hava a username')
         if email is None:
@@ -38,6 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # db_index to search by username
     email           = models.EmailField(max_length=255, unique=True, db_index=True)
     roles           = models.CharField(default="psg",max_length= 10)
+    profilePicture  = models.FileField(max_length=None,blank=True,null=True, default=None)
     is_verified = models.BooleanField(default=True)
      # we set is because the email to verify was needed
     is_active = models.BooleanField(default=True)
@@ -46,8 +52,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateTimeField(auto_now=True)
 
     #TO TELL DJANGO TO USE USERNAIM 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username',]
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email',]
 
     objects = UserManager()
 
