@@ -27,8 +27,8 @@ class Passenger(models.Model):
     
     firstName       = models.CharField(max_length=100,null=True, blank=True)
     lastName        = models.CharField(max_length=100,null=True, blank=True)
-    telephone       = models.CharField(max_length=11)
-    address         = models.CharField (max_length= 100,blank=True)
+    telephone       = models.CharField(max_length=11, blank=True)
+    address         = models.CharField (max_length= 100,blank=True, null=True)
     profilePicture  = models.FileField(max_length=None,blank=True,null=True)
     roles            = models.CharField(default="passenger", max_length= 50)
     # this method is used as toString for java.
@@ -73,32 +73,44 @@ class Bus(models.Model):
 
 
 class Route(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.name
 
-class BusStop(models.Model):
-
+class Zone(models.Model):
+    id = models.AutoField(primary_key=True)
     routes = models.ForeignKey(Route, on_delete=models.CASCADE)
-    busStopName = models.CharField(max_length=100)
+    zoneName = models.CharField(max_length=255,unique=True)
+
+    def __str__(self):
+        return self.zoneName
+    
+    class Meta:
+        unique_together =(("routes", "zoneName"),)
+
+
+class BusStop(models.Model):
+    id = models.AutoField(primary_key=True)
+    zones = models.ForeignKey(Zone, on_delete=models.CASCADE)
+    busStopName = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.busStopName
 
     class Meta:
-        unique_together = (("routes", "busStopName"),) 
+        unique_together = (("zones", "busStopName"),) 
 
         
 # class for requesting a ride
 class RideRequest(models.Model):
-    CHOICE = [BusStop.objects.all()]
     pickupTime          = models.DateTimeField(blank=True, null = True, default=None)
-    # departureCity       = models.CharField(max_length=255)
+    departureCity       = models.CharField(max_length=255, blank=True)
     departureLocation   = PlainLocationField(based_fields=['departureCity'], zoom=13,null=True, blank=True)
-    # destinationCity     = models.CharField(max_length=255)
+    destinationCity     = models.CharField(max_length=255, blank=True)
     destinationLocation = PlainLocationField(based_fields=['destinationCity'], zoom=13, null=True, blank=True)
-    numberOfSeets       = models.PositiveIntegerField(null=False)
+    numberOfSeets       = models.PositiveIntegerField(null=True)
     disabledPoeple      = models.PositiveIntegerField(null=True)
     passengers          = models.ForeignKey(User, on_delete=models.CASCADE, blank = True, null=True) 
 

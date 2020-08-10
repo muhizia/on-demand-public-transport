@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from WeGo.models import Passenger,Route
-from WeGo.models import Driver, Bus,Manager,RideRequest,BusStop
+from WeGo.models import Driver, Bus,Manager,RideRequest,BusStop,Zone
 from django.contrib.auth.models import User
 
 
@@ -52,16 +52,23 @@ class RideRequestSerializer(serializers.ModelSerializer):
         fields = ('id','pickupTime', 'departureLocation', 'destinationLocation',
         'numberOfSeets','disabledPoeple','passengers')
 
-class BusStopSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = BusStop
-        fields = ('id','routes','busStopName')
+
 class RouteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Route
         fields = ('id','name')
 
+class ZoneSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Zone
+        fields = ('id','routes','zoneName')
+    
+class BusStopSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = BusStop
+        fields = ('id','zones','busStopName')
 
 
