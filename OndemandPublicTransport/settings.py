@@ -137,8 +137,8 @@ STATIFILES_DIRS = {
 LOCATION_FIELD = {
     'search.provider': 'google',
 
-    'provider.google.api': '//maps.google.com/maps/api/js?sensor=false',
-    'provider.google.api_key': 'AIzaSyDP-Apvj40Y8GQ69IO7Pwwi2cLqyKtS-Ro',
+    'provider.google.api': '', # add your api from google cloud
+    'provider.google.api_key': '', # add your api key gotten from google cloud
     'provider.google.api_libraries': '',
     'provider.google.map.type': 'ROADMAP',
 }
