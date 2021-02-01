@@ -75,6 +75,8 @@ WSGI_APPLICATION = 'OndemandPublicTransport.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# This is how we connect to the database.
+# I was using MongoDB
 DATABASES = {
 
     'default': {

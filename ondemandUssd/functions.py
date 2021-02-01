@@ -2,6 +2,7 @@ from ondemandUssd.models import Passenger,Session_levels,UssdRideRequest
 
 from datetime import datetime
 
+# method for checking if the user exist
 def checkUserExist(telephone):
     try:
         getLevel = Passenger.objects.get(telephone=telephone)
@@ -9,6 +10,8 @@ def checkUserExist(telephone):
         return False
     else:
         return True
+
+# method for getting passanger based on his phone
 def getPassengerDetail(telephone):
     try:
         getPassenger = Passenger.objects.get(telephone=telephone)
@@ -17,6 +20,7 @@ def getPassengerDetail(telephone):
     else:
         return getPassenger
 
+# method for save the ride details
 def saveRequestLocation(pickupTime, departureCity, destinationCity,passengers,disabled):
     
     pickTime = datetime.strptime(pickupTime, "%m/%d/%Y %H:%M")
@@ -25,10 +29,12 @@ def saveRequestLocation(pickupTime, departureCity, destinationCity,passengers,di
     savelocation.save()
     return savelocation
 
+# tracking the sessions
 def saveSession(session,telephone, level):
     
     getLevel = Session_levels(session_id=session,telephone=telephone, level=level)
     getLevel.save()
+
 
 def checkUserLevel(telephone):
     try:
@@ -38,6 +44,7 @@ def checkUserLevel(telephone):
     else:
         return getUserLevel.level
 
+
 def checksessionLevel(session):
     try:   
         getSesssionLevel = Session_levels.objects.get(session_id= session)
@@ -46,10 +53,12 @@ def checksessionLevel(session):
     else:
          return getSesssionLevel.level
 
+
 def saveNewUser(names, phoneNumber, password):
     global saveNew
     saveNew = Passenger(names=names, telephone=phoneNumber, password=password)
     saveNew.save()
+
 
 def checkPassword(telephone,password):
         try:
@@ -62,6 +71,7 @@ def checkPassword(telephone,password):
             else:
                 return False
 
+
 def updateUserPassword(telephone, password):
     try:
         updatepassword = Passenger.objects.get(telephone=telephone)
@@ -72,7 +82,8 @@ def updateUserPassword(telephone, password):
         updatepassword.save()
         return True
 
-   
+
+
 def updateSession(sesssion, telephone, level):
     try:      
         updatesession = Session_levels.objects.get(session_id=sesssion)
@@ -83,7 +94,6 @@ def updateSession(sesssion, telephone, level):
         updatesession.save()
         return 1
     
-
 
 def userLevel(telephone):
     try:

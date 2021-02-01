@@ -17,7 +17,7 @@ class Manager(models.Model):
     roles           = models.CharField(default="manager",max_length= 50)
     # this method is used as toString for java.
     def __str__(self):
-        return  self.firstName+' '+lastName
+        return  self.firstName+' '+ lastName
 
   
     
@@ -71,7 +71,7 @@ class Bus(models.Model):
         if self.plateNumber:
             self.plateNumber = self.plateNumber.strip()
 
-
+# class for route
 class Route(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, unique=True)
@@ -79,6 +79,7 @@ class Route(models.Model):
     def __str__(self):
         return self.name
 
+#class for Zone that are located on route
 class Zone(models.Model):
     id = models.AutoField(primary_key=True)
     routes = models.ForeignKey(Route, on_delete=models.CASCADE)
@@ -90,7 +91,7 @@ class Zone(models.Model):
     class Meta:
         unique_together =(("routes", "zoneName"),)
 
-
+# Bus stop located in a specific zone
 class BusStop(models.Model):
     id = models.AutoField(primary_key=True)
     zones = models.ForeignKey(Zone, on_delete=models.CASCADE)
